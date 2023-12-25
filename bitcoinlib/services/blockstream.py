@@ -89,9 +89,11 @@ class BlockstreamClient(BaseClient):
     def _parse_transaction(self, tx):
         confirmations = 0
         block_height = None
+        block_hash = None
         if 'block_height' in tx['status']:
             block_height = tx['status']['block_height']
             confirmations = self.latest_block - block_height
+            block_hash = tx['status']['block_hash']
         status = 'unconfirmed'
         if tx['status']['confirmed']:
             status = 'confirmed'
@@ -99,7 +101,7 @@ class BlockstreamClient(BaseClient):
         t = Transaction(locktime=tx['locktime'], version=tx['version'], network=self.network,
                         fee=fee, size=tx['size'], txid=tx['txid'],
                         date=None if 'block_time' not in tx['status'] else datetime.utcfromtimestamp(tx['status']['block_time']),
-                        confirmations=confirmations, block_height=block_height, status=status,
+                        confirmations=confirmations, block_height=block_height, status=status, block_hash=block_hash,
                         coinbase=tx['vin'][0]['is_coinbase'])
         index_n = 0
         for ti in tx['vin']:
