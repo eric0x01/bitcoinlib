@@ -137,6 +137,7 @@ class BlockstreamClient(BaseClient):
         return t
 
     def gettransaction(self, txid):
+        self.latest_block = self.blockcount() if not self.latest_block else self.latest_block
         tx = self.compose_request('tx', txid)
         return self._parse_transaction(tx)
 
