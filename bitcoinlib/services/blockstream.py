@@ -126,7 +126,8 @@ class BlockstreamClient(BaseClient):
             address = ''
             if 'scriptpubkey_address' in to:
                 address = to['scriptpubkey_address']
-            spent = self.isspent(t.txid, index_n)
+            # spent = self.isspent(t.txid, index_n)
+            spent = False
             t.add_output(value=to['value'], address=address, lock_script=to['scriptpubkey'],
                          output_n=index_n, spent=spent, strict=self.strict)
             index_n += 1
