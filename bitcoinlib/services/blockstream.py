@@ -60,7 +60,7 @@ class BlockstreamClient(BaseClient):
 
     def getutxos(self, address, after_txid='', limit=MAX_TRANSACTIONS):
         res = self.compose_request('address', address, 'utxo')
-        self.latest_block = self.blockcount() if not self.latest_block else self.latest_block
+        self.latest_block = self.blockcount()
         utxos = []
         res = sorted(res, key=lambda k: 0 if 'block_height' not in k['status'] else k['status']['block_height'])
         for a in res:
@@ -68,7 +68,7 @@ class BlockstreamClient(BaseClient):
             block_height = None
             if 'block_height' in a['status']:
                 block_height = a['status']['block_height']
-                confirmations = block_height - self.latest_block + 1
+                confirmations = self.latest_block - block_height + 1
             utxos.append({
                 'address': address,
                 'txid': a['txid'],
