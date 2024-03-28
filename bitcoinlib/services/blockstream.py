@@ -68,7 +68,7 @@ class BlockstreamClient(BaseClient):
             block_height = None
             if 'block_height' in a['status']:
                 block_height = a['status']['block_height']
-                confirmations = self.latest_block - block_height
+                confirmations = block_height - self.latest_block + 1
             utxos.append({
                 'address': address,
                 'txid': a['txid'],
